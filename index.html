@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỷ Niệm Của Chúng Ta</title>
+    <style>
+        /* Cài đặt cơ bản cho trang */
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            /* Tạo một nền trời xanh nhạt cho cảm giác kỷ niệm */
+            background: linear-gradient(to bottom, #87CEEB, #FFFFFF);
+            font-family: Arial, sans-serif;
+            /* Ẩn thanh cuộn ngang/dọc nếu có vật thể rơi ra ngoài */
+            overflow: hidden; 
+        }
+
+        /* Tiêu đề */
+        h1 {
+            text-align: center;
+            color: white;
+            padding-top: 50px;
+            font-size: 3rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            /* Đảm bảo tiêu đề luôn nổi lên trên */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Vùng chứa tất cả các vật thể rơi */
+        .falling-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Cho phép nhấp chuột "xuyên qua" lớp này */
+            z-index: 1;
+        }
+
+        /* Định nghĩa chuyển động rơi */
+        @keyframes fall {
+            0% {
+                /* Bắt đầu từ bên trên màn hình và không xoay */
+                transform: translateY(-200px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                /* Kết thúc ở bên dưới màn hình và xoay 360 độ */
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
+        /* Kiểu dáng chung cho mỗi vật thể rơi */
+        .falling-item {
+            position: absolute;
+            top: -200px; /* Bắt đầu ở vị trí ẩn phía trên */
+            /* Áp dụng animation 'fall' */
+            animation-name: fall;
+            animation-iteration-count: infinite; /* Lặp lại vô hạn */
+            animation-timing-function: linear; /* Rơi với tốc độ đều */
+        }
+
+        /* Kiểu dáng riêng cho hình ảnh */
+        .falling-item img {
+            width: 150px; /* Kích thước ảnh */
+            height: auto;
+            border: 4px solid white; /* Tạo viền trắng như ảnh kỷ niệm */
+            border-radius: 8px; /* Bo góc */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Đổ bóng cho đẹp */
+        }
+
+        /* Kiểu dáng riêng cho sticker (emoji) */
+        .falling-item.emoji {
+            font-size: 3rem; /* Kích thước emoji */
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* * PHẦN QUAN TRỌNG: TẠO SỰ NGẪU NHIÊN VÀ ĐA DẠNG HƠN
+         * Nhân đôi số lượng vật thể rơi và điều chỉnh thông số
+         * để chúng rơi dày đặc và ngẫu nhiên hơn.
+        */
+
+        /* Set 1 ảnh + emoji */
+        .falling-item:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: -5s; }
+        .falling-item:nth-child(2) { left: 20%; animation-duration: 8s; animation-delay: -2s; }
+        .falling-item:nth-child(3) { left: 30%; animation-duration: 10s; animation-delay: -8s; }
+        .falling-item:nth-child(4) { left: 40%; animation-duration: 7s; animation-delay: -3s; }
+        .falling-item:nth-child(5) { left: 50%; animation-duration: 13s; animation-delay: -1s; }
+        .falling-item:nth-child(6) { left: 60%; animation-duration: 9s; animation-delay: -6s; }
+        .falling-item:nth-child(7) { left: 70%; animation-duration: 11s; animation-delay: -4s; }
+        .falling-item:nth-child(8) { left: 80%; animation-duration: 14s; animation-delay: -7s; }
+
+        /* Set 2 ảnh + emoji (lặp lại) */
+        .falling-item:nth-child(9) { left: 5%; animation-duration: 9s; animation-delay: -10s; }
+        .falling-item:nth-child(10) { left: 15%; animation-duration: 11s; animation-delay: -1s; }
+        .falling-item:nth-child(11) { left: 25%; animation-duration: 7s; animation-delay: -6s; }
+        .falling-item:nth-child(12) { left: 35%; animation-duration: 14s; animation-delay: -3s; }
+        .falling-item:nth-child(13) { left: 45%; animation-duration: 8s; animation-delay: -9s; }
+        .falling-item:nth-child(14) { left: 55%; animation-duration: 12s; animation-delay: -2s; }
+        .falling-item:nth-child(15) { left: 65%; animation-duration: 10s; animation-delay: -7s; }
+        .falling-item:nth-child(16) { left: 75%; animation-duration: 13s; animation-delay: -4s; }
+
+        /* Set 3 ảnh + emoji (lặp lại) */
+        .falling-item:nth-child(17) { left: 2%; animation-duration: 10s; animation-delay: -12s; }
+        .falling-item:nth-child(18) { left: 12%; animation-duration: 13s; animation-delay: -5s; }
+        .falling-item:nth-child(19) { left: 22%; animation-duration: 9s; animation-delay: -1s; }
+        .falling-item:nth-child(20) { left: 32%; animation-duration: 8s; animation-delay: -8s; }
+        .falling-item:nth-child(21) { left: 42%; animation-duration: 15s; animation-delay: -3s; }
+        .falling-item:nth-child(22) { left: 52%; animation-duration: 7s; animation-delay: -10s; }
+        .falling-item:nth-child(23) { left: 62%; animation-duration: 11s; animation-delay: -6s; }
+        .falling-item:nth-child(24) { left: 72%; animation-duration: 14s; animation-delay: -2s; }
+
+        /* Set 4 ảnh + emoji (lặp lại) */
+        .falling-item:nth-child(25) { left: 88%; animation-duration: 12s; animation-delay: -9s; }
+        .falling-item:nth-child(26) { left: 90%; animation-duration: 8s; animation-delay: -4s; }
+        .falling-item:nth-child(27) { left: 92%; animation-duration: 10s; animation-delay: -11s; }
+        .falling-item:nth-child(28) { left: 95%; animation-duration: 7s; animation-delay: -6s; }
+
+    </style>
+</head>
+<body>
+
+    <h1>Kỷ Niệm Đáng Nhớ 🌟</h1>
+
+    <div class="falling-container">
+        <div class="falling-item"><img src="image_f1a0c0.jpg" alt="Kỷ niệm 1"></div>
+        <div class="falling-item"><img src="image_f1a0de.jpg" alt="Kỷ niệm 2"></div>
+        <div class="falling-item"><img src="image_f1a0ba.jpg" alt="Kỷ niệm 3"></div>
+        <div class="falling-item"><img src="image_f1a0a0.jpg" alt="Kỷ niệm 4"></div>
+
+        <div class="falling-item"><img src="image_f1a0c0.jpg" alt="Kỷ niệm 1"></div>
+        <div class="falling-item"><img src="image_f1a0de.jpg" alt="Kỷ niệm 2"></div>
+        <div class="falling-item"><img src="image_f1a0ba.jpg" alt="Kỷ niệm 3"></div>
+        <div class="falling-item"><img src="image_f1a0a0.jpg" alt="Kỷ niệm 4"></div>
+
+        <div class="falling-item"><img src="image_f1a0c0.jpg" alt="Kỷ niệm 1"></div>
+        <div class="falling-item"><img src="image_f1a0de.jpg" alt="Kỷ niệm 2"></div>
+        <div class="falling-item"><img src="image_f1a0ba.jpg" alt="Kỷ niệm 3"></div>
+        <div class="falling-item"><img src="image_f1a0a0.jpg" alt="Kỷ niệm 4"></div>
+
+        <div class="falling-item emoji">🎈</div>
+        <div class="falling-item emoji">🎉</div>
+        <div class="falling-item emoji">✨</div>
+        <div class="falling-item emoji">❤️</div>
+        <div class="falling-item emoji">🥰</div>
+        <div class="falling-item emoji">🤗</div>
+        <div class="falling-item emoji">🌟</div>
+        <div class="falling-item emoji">🎊</div>
+
+        <div class="falling-item emoji">🎈</div>
+        <div class="falling-item emoji">🎉</div>
+        <div class="falling-item emoji">✨</div>
+        <div class="falling-item emoji">❤️</div>
+        <div class="falling-item emoji">🥰</div>
+        <div class="falling-item emoji">🤗</div>
+        <div class="falling-item emoji">🌟</div>
+        <div class="falling-item emoji">🎊</div>
+    </div>
+
+</body>
+</html>
